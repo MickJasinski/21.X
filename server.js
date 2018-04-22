@@ -1,0 +1,100 @@
+// * * * * * v1 * * * * *
+
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://localhost/nodeappdatabase", {
+	useMongoClient: true
+});
+
+// New user template
+const userSchema = new Schema({
+	name: String,
+	username: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
+	admin: Boolean,
+	created_at: Date,
+	updated_at: Date
+});
+
+// Method that midifies user name / Mongoose schema method
+userSchema.methods.manify = function(next) {
+	this.name = this.name + "-boy";
+	return next(null, this.name);
+};
+
+// Function that manages dates of creation nad updating records
+userSchema.pre("save", function(next) {
+	// this takes a current date
+	const currentDate = new Date();
+
+	// this updates a field with a current date
+	this.updated_at = currentDate;
+	if (!this.created_at) {
+		this.created_at = currentDate;
+	}
+
+	// next() is a funcion that jumps to the next hook
+	// to be executed before of after request
+	next();
+});
+
+//model based on userSchema
+const User = mongoose.model("User", userSchema);
+
+// * * * * * User's data * * * * *
+
+// Kenny
+const kenny = new User({
+	name: "Kenny",
+	username: "Kenny_the_boy",
+	password: "password"
+});
+
+kenny.manify(function(err, name) {
+	if (err) throw err;
+	console.log("Twoje nowe imię to: " + name);
+});
+
+kenny.save(function(err) {
+	if (err) throw err;
+
+	console.log("Uzytkownik zapisany pomyslnie");
+});
+
+// Benny
+const benny = new User({
+	name: "Benny",
+	username: "Benny_the_boy",
+	password: "password"
+});
+
+benny.manify(function(err, name) {
+	if (err) throw err;
+	console.log("Twoje nowe imię to: " + name);
+});
+
+benny.save(function(err) {
+	if (err) throw err;
+
+	console.log("Uzytkownik " + benny.name + " zapisany pomyslnie");
+});
+
+// Mark
+const mark = new User({
+	name: "Mark",
+	username: "Mark_the_boy",
+	password: "password"
+});
+
+mark.manify(function(err, name) {
+	if (err) throw err;
+	console.log("Twoje nowe imię to: " + name);
+});
+
+mark.save(function(err) {
+	if (err) throw err;
+
+	console.log("Uzytkownik " + mark.name + " zapisany pomyslnie");
+});
