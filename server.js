@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const express = require('express');
+const app = express();
 
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://mick:123qwe@ds249839.mlab.com:49839/test-one", {
