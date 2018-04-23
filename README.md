@@ -1,1 +1,1 @@
-https://dashboard.heroku.com/apps/pacific-peak-60643
+https://pacific-peak-60643.herokuapp.com/
